@@ -235,7 +235,7 @@ def _compare_search(path_a, path_b):
     diffs = []
     metric = "recall@10"
     for qid in a_m[metric].keys():
-        if b_m[metric][qid] < a_m[metric][qid]: diffs.append('Increase')
+        if b_m[metric][qid] > a_m[metric][qid]: diffs.append('Increase')
         if b_m[metric][qid] == a_m[metric][qid]: diffs.append('Equal')
         if b_m[metric][qid] < a_m[metric][qid]: diffs.append('Decrease') 
 
@@ -250,7 +250,7 @@ def _compare_search(path_a, path_b):
     diffs = []
     metric = "mrr@10"
     for qid in a_m[metric].keys():
-        if b_m[metric][qid] < a_m[metric][qid]: diffs.append('Increase')
+        if b_m[metric][qid] > a_m[metric][qid]: diffs.append('Increase')
         if b_m[metric][qid] == a_m[metric][qid]: diffs.append('Equal')
         if b_m[metric][qid] < a_m[metric][qid]: diffs.append('Decrease') 
 
