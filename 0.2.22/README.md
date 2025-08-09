@@ -36,11 +36,11 @@ PATH_A="deprecated-AdamW/20250806-pypi-1" PATH_B="deprecated-AdamW/20250806-test
 
 ## Data Prep
 
-Since `colbert-ai` expects training triples (qid, pos pid, neg pid) as a JSON file, `prep_data.ipynb` converts the MSMARCO triples tsv to a JSON format.
+Since `colbert-ai` expects training triples (qid, pos pid, neg pid) as a JSON file, [`prep_data.ipynb`](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/prep_data.ipynb) converts the MSMARCO triples tsv to a JSON format.
 
 ## Training Plots
 
-Training logs are copy-pasted from the terminal into `*_train_log.txt` files. You can plot two logs using [`Training_Plots.ipynb`](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/Training_Plots.ipynb). Two example plots are highlighted:
+Training logs are copy-pasted from the terminal into `*_train_log.txt` files. You can plot two logs using [`Training_Plots.ipynb`](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/Training_Plots.ipynb). Plots of interest:
 
 - [1.13.1-vs-2.7.1.png](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/1.13.1-vs-2.7.1.png): compares 0.2.21 PyPI and main branch `colbert-ai` installs for single-GPU training.
 - [1.13.1-vs-2.7.1_4.png](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/1.13.1-vs-2.7.1_4.png): compares 0.2.21 PyPI and main branch `colbert-ai` installs for multi-GPU training.
@@ -50,6 +50,6 @@ Training logs are copy-pasted from the terminal into `*_train_log.txt` files. Yo
 The training logs have format:
 
 ```
-#>>>    <pos doc scor>             |                <pos score - neg score>
+#>>>    <pos doc scor> <neg doc scor>            |                <pos score - neg score>
 [<timestamp>] <step #> <training loss>
 ```
