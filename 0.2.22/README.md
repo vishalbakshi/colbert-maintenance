@@ -1,4 +1,4 @@
-## `colbertt-ai` 0.2.22 Release Testing Scripts
+## `colbert-ai` 0.2.22 Release Testing Scripts
 
 This folder contains testing scripts for the 0.2.22 release. 
 
