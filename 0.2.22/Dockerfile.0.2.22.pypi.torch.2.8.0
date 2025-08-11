@@ -12,7 +12,7 @@ ENV CONDA_DEFAULT_ENV=colbert
 ENV PATH=/opt/conda/envs/colbert/bin:$PATH
 
 RUN micromamba run -n colbert pip install colbert-ai==0.2.22
-RUN micromamba run -n colbert pip install torch
+RUN micromamba run -n colbert pip install torch==2.8.0
 RUN micromamba run -n colbert pip install transformers
 RUN micromamba run -n colbert pip install pytrec_eval
 RUN micromamba run -n colbert pip install pandas
