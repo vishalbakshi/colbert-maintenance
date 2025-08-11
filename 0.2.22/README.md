@@ -6,9 +6,10 @@ This folder contains testing scripts for the 0.2.22 release.
 
 - Dockerfile.main: installs the stanford-futuredata/ColBERT repo's main branch (as of August 10, 2025) with latest torch (`2.8.0`) and transformers (`4.55.0`).
 - Dockerfile.0.2.21.pypi.torch.1.13.1: installs `colbert-ai==0.2.21` from PyPI with `torch==1.31.1` and `transformers==4.38.2`.
-- Dockerfile.0.2.22.testpypi.torch.1.13.1: installs the test build of the main branch pushed to TestPyPI with `torch==1.31.1` and `transformers==4.38.2`. This install is used to measure backwards compatibility with Dockerfile.0.2.21.
+- Dockerfile.0.2.22.testpypi.torch.1.13.1: installs the test build of the main branch pushed to TestPyPI with `torch==1.31.1` and `transformers==4.38.2`. This install is used to measure backwards compatibility with Dockerfile.0.2.21.pypi.torch.1.13.1.
 - Dockerfile.0.2.22.testpypi.torch.2.8.0: installs the test build of the main branch pushed to TestPyPI with `torch==2.8.0` and `transformers==4.55.0`. This install is used to compare with the `main` branch install as a "pre-release" test.
-- Dockerfile.0.2.22.pypi: installs `colbert-ai==0.2.22` from PyPI with `torch==2.8.0` and `transformers==4.55.0` (the latest versions of each library as of August 10, 2025).
+- Dockerfile.0.2.22.pypi.torch.2.8.0: installs `colbert-ai==0.2.22` from PyPI with `torch==2.8.0` and `transformers==4.55.0` (the latest versions of each library as of August 10, 2025).
+- Dockerfile.0.2.22.pypi.torch.1.13.1: installs `colbert-ai==0.2.22` from PyPI with `torch==1.13.1` and `transformers==4.38.2` (backwards compatibility check).
 - Dockerfile.compare: installs torch, ranx and pandas for index and search artifact comparison.
 
 ## Indexing, Search and Training Code
