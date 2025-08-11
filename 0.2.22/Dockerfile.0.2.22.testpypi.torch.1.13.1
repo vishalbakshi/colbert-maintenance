@@ -11,9 +11,8 @@ RUN micromamba install -n colbert faiss-gpu -c pytorch -c conda-forge
 ENV CONDA_DEFAULT_ENV=colbert
 ENV PATH=/opt/conda/envs/colbert/bin:$PATH
 
-RUN micromamba run -n colbert pip install colbert-ai
-RUN micromamba run -n colbert pip install torch
-RUN micromamba run -n colbert pip install transformers
+RUN micromamba run -n colbert pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ colbert-ai[torch]==0.2.22
+RUN micromamba run -n colbert pip install transformers==4.38.2
 RUN micromamba run -n colbert pip install pytrec_eval
 
 RUN pwd

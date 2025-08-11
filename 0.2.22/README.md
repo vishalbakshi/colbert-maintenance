@@ -4,11 +4,12 @@ This folder contains testing scripts for the 0.2.22 release.
 
 ### Dockerfiles
 
-- [Dockerfile.main](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/Dockerfile.main): installs the GitHub repo's main branch + latest torch and transformers.
-- [Dockerfile.pypi](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/Dockerfile.pypi): installs 0.2.21 on PyPI.
-- [Dockerfile.testpypi](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/Dockerfile.testpypi): installs the build of the main branch pushed to PyPI.
-- Dockerfile.newpypi: installs 0.2.22 from PyPI.
-- [Dockerfile.compare](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/Dockerfile.compare): installs torch, ranx and pandas for index and search artifact comparison.
+- Dockerfile.main: installs the stanford-futuredata/ColBERT repo's main branch (as of August 10, 2025) with latest torch (`2.8.0`) and transformers (`4.55.0`).
+- Dockerfile.0.2.21: installs `colbert-ai==0.2.21` from PyPI with `torch==1.31.1` and `transformers==4.38.2`.
+- Dockerfile.0.2.22.testpypi.torch.1.13.1: installs the test build of the main branch pushed to TestPyPI with `torch==1.31.1` and `transformers==4.38.2`. This install is used to measure backwards compatibility with Dockerfile.0.2.21.
+- Dockerfile.0.2.22.testpypi.torch.2.8.0: installs the test build of the main branch pushed to TestPyPI with `torch==2.8.0` and `transformers==4.55.0`. This install is used to compare with the `main` branch install as a "pre-release" test.
+- Dockerfile.0.2.22.pypi: installs `colbert-ai==0.2.22` from PyPI with `torch==2.8.0` and `transformers==4.55.0` (the latest versions of each library as of August 10, 2025).
+- Dockerfile.compare: installs torch, ranx and pandas for index and search artifact comparison.
 
 ## Indexing, Search and Training Code
 
@@ -40,12 +41,7 @@ Since `colbert-ai` expects training triples (qid, pos pid, neg pid) as a JSON fi
 
 ## Training Plots
 
-Training logs are copy-pasted from the terminal into `*_train_log.txt` files. You can plot two logs using [`Training_Plots.ipynb`](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/Training_Plots.ipynb). Plots of interest:
-
-- [1.13.1-vs-2.7.1.png](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/1.13.1-vs-2.7.1.png): compares 0.2.21 PyPI and main branch `colbert-ai` installs for single-GPU training.
-- [1.13.1-vs-2.7.1_4.png](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/1.13.1-vs-2.7.1_4.png): compares 0.2.21 PyPI and main branch `colbert-ai` installs for multi-GPU training.
-- [main-vs-testpypi.png](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/main-vs-testpypi.png): compares 0.2.22 main branch and TestPyPI installs for single-GPU training.
-- [main-vs-testpypi-4.png](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/main-vs-testpypi-4.png): compares 0.2.22 main branch and TestPyPI installs for multi-GPU training.
+Training logs are copy-pasted from the terminal into `*_train_log.txt` files. You can plot two logs using [`Training_Plots.ipynb`](https://github.com/vishalbakshi/colbert-maintenance/blob/main/0.2.22/Training_Plots.ipynb). 
 
 The training logs have format:
 
