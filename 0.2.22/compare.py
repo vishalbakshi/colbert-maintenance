@@ -197,6 +197,8 @@ def _compare_search(path_a, path_b):
     try:
         assert a_mr == b_mr
         console.print(f"[green]✓ Mean Recall@10 Matches[/green]")
+        console.print(f"\tA: [green]{a_mr}[/green]")
+        console.print(f"\tB: [green]{b_mr}[/green]")
     except:
         console.print("[red]✗ Mean Recall@10 Doesn't Match[/red]")
         console.print(f"\tA: [red]{a_mr}[/red]")
@@ -206,6 +208,8 @@ def _compare_search(path_a, path_b):
     try:
         assert a_mrr == b_mrr
         console.print(f"[green]✓ Mean MRR@10 Matches[/green]")
+        console.print(f"\tA: [green]{a_mrr}[/green]")
+        console.print(f"\tB: [green]{b_mrr}[/green]")
     except:
         console.print("[red]✗ Mean MRR@10 Doesn't Match[/red]")
         console.print(f"\tA: [red]{a_mrr}[/red]")
@@ -234,6 +238,7 @@ def _compare_search(path_a, path_b):
 
     diffs = []
     metric = "recall@10"
+    print(len(a_m[metric].keys()))
     for qid in a_m[metric].keys():
         if b_m[metric][qid] > a_m[metric][qid]: diffs.append('Increase')
         if b_m[metric][qid] == a_m[metric][qid]: diffs.append('Equal')
@@ -249,6 +254,7 @@ def _compare_search(path_a, path_b):
 
     diffs = []
     metric = "mrr@10"
+    print(len(a_m[metric].keys()))
     for qid in a_m[metric].keys():
         if b_m[metric][qid] > a_m[metric][qid]: diffs.append('Increase')
         if b_m[metric][qid] == a_m[metric][qid]: diffs.append('Equal')
@@ -259,6 +265,6 @@ def _compare_search(path_a, path_b):
 
 @app.local_entrypoint()
 def main():
-    #_compare_index.remote(path_a=PATH_A, path_b=PATH_B)
-    #_compare_search.remote(path_a=PATH_A, path_b=PATH_B)
+    _compare_index.remote(path_a=PATH_A, path_b=PATH_B)
+    _compare_search.remote(path_a=PATH_A, path_b=PATH_B)
     #_data.remote()

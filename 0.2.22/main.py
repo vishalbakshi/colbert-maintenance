@@ -11,7 +11,8 @@ PYTHON_PATH = "/opt/conda/envs/colbert/bin/python"
 VOLUME = Volume.from_name("colbert-maintenance", create_if_missing=True)
 MOUNT = "/colbert-maintenance"
 MAXSTEPS = int(os.environ.get("MAXSTEPS", 10))
-image = Image.from_dockerfile(f"Dockerfile.{SOURCE}", gpu=GPU)
+NRANKS = int(os.environ.get("NRANKS", 1))
+image = Image.from_dockerfile(f"Dockerfile.{SOURCE}", gpu="L4")
 app = App(PROJECT)
 
 print(f"Source: {SOURCE}")
@@ -21,7 +22,7 @@ print(f"Date: {DATE}")
 @app.function(gpu=GPU, image=image, timeout=3600,
               volumes={MOUNT: VOLUME},
               max_containers=1)
-def _index(source, project, date):
+def _index(source, project, date, nranks):
     from colbert import Indexer
     from colbert.infra import RunConfig, ColBERTConfig
     from colbert.infra.run import Run
@@ -32,7 +33,7 @@ def _index(source, project, date):
     queries = load_dataset("UKPLab/dapr", f"{dataset_name}-queries", split="test")
     qrels_rows = load_dataset("UKPLab/dapr", f"{dataset_name}-qrels", split="test")
 
-    with Run().context(RunConfig(nranks=1)):
+    with Run().context(RunConfig(nranks=nranks)):
         config = ColBERTConfig(
             doc_maxlen=256,      
             nbits=4,             
@@ -44,14 +45,14 @@ def _index(source, project, date):
         )
         
         indexer = Indexer(checkpoint="answerdotai/answerai-colbert-small-v1", config=config)
-        _ = indexer.index(name=f"{MOUNT}/{project}/{date}-{source}/indexing/{dataset_name}", collection=passages[:70000]["text"], overwrite=True)
+        _ = indexer.index(name=f"{MOUNT}/{project}/{date}-{source}-{nranks}/indexing/{dataset_name}", collection=passages[:70000]["text"], overwrite=True)
 
     print("Index created!")
 
 @app.function(gpu=GPU, image=image, timeout=3600,
               volumes={MOUNT: VOLUME},
               max_containers=1)
-def _search(source, project, date):
+def _search(source, project, date, nranks):
     from colbert.data import Queries
     from colbert.infra import Run, RunConfig, ColBERTConfig
     from colbert import Searcher
@@ -67,7 +68,7 @@ def _search(source, project, date):
     queries_dict = {}
     for item in queries: queries_dict[item['_id']] = item['text']
 
-    with Run().context(RunConfig(nranks=1)):
+    with Run().context(RunConfig(nranks=nranks)):
 
         config = ColBERTConfig(
                 ncells=4,
@@ -75,9 +76,9 @@ def _search(source, project, date):
                 ndocs=1024,
             )
 
-        searcher = Searcher(index=dataset_name, index_root=f"{MOUNT}/{project}/{date}-{source}/indexing", config=config)
+        searcher = Searcher(index=dataset_name, index_root=f"{MOUNT}/{project}/{date}-{source}-{nranks}/indexing", config=config)
         ranking = searcher.search_all(queries_dict, k=10)
-        ranking.save(f"{MOUNT}/{project}/{date}-{source}/search/{dataset_name}.tsv")
+        ranking.save(f"{MOUNT}/{project}/{date}-{source}-{nranks}/search/{dataset_name}.tsv")
 
     print("Search complete!")
 
@@ -119,15 +120,15 @@ def _data():
 @app.function(gpu=GPU, image=image, timeout=3600,
               volumes={MOUNT: VOLUME},
               max_containers=1)
-def _train(source, project, date, maxsteps):
+def _train(source, project, date, maxsteps, nranks):
     from colbert.infra import Run, RunConfig, ColBERTConfig
     from colbert import Trainer
 
-    with Run().context(RunConfig(nranks=1)):
+    with Run().context(RunConfig(nranks=nranks)):
 
         config = ColBERTConfig(
             bsize=32,
-            root=f"{MOUNT}/{project}/{date}-{source}/training/",
+            root=f"{MOUNT}/{project}/{date}-{source}-{nranks}/training/",
             maxsteps=maxsteps
         )
 
@@ -142,11 +143,22 @@ def _train(source, project, date, maxsteps):
 
         print(f"Saved checkpoint to {checkpoint_path}...")
 
+@app.function(gpu=GPU, image=image, timeout=3600,
+              volumes={MOUNT: VOLUME},
+              max_containers=1)
+def _versions():
+    import torch
+    import transformers
+    print(f"torch: {torch.__version__}")
+    print(f"transformers: {transformers.__version__}")
+
 @app.local_entrypoint()
 def main():
-    # import time
-    #_index.remote(source=SOURCE, project=PROJECT, date=DATE)
-    #time.sleep(5)
-    #_search.remote(source=SOURCE, project=PROJECT, date=DATE)
+    import time
+    _versions.remote()
+    _index.remote(source=SOURCE, project=PROJECT, date=DATE, nranks=NRANKS)
+    time.sleep(5)
+    _search.remote(source=SOURCE, project=PROJECT, date=DATE, nranks=NRANKS)
     #_data.remote()
-    _train.remote(source=SOURCE, project=PROJECT, date=DATE, maxsteps=MAXSTEPS, )
+    time.sleep(5)
+    _train.remote(source=SOURCE, project=PROJECT, date=DATE, maxsteps=MAXSTEPS, nranks=NRANKS)
