@@ -1,4 +1,4 @@
-## torch==1.13.1 --> torch.2.0
+## torch==1.13.1 --> torch==2.0
 
 I ran indexing (ConditionalQA), search (ConditionalQA) and training (MSMARCO) for the following two `colbert-ai` installs:
 
