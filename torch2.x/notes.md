@@ -141,6 +141,45 @@ Name: count, dtype: int64
 
 <img width="1189" height="790" alt="image" src="https://github.com/user-attachments/assets/11941df2-00b9-475f-90d2-416d4955c420" />
 
+## torch==1.13.1 --> torch==2.0.1
+
+This yields identical index, search and training artifacts.
+
+```
+╭───────── FINAL SUMMARY ──────────╮
+│ Files processed: 10              │
+│ Shape matches: 10/10             │
+│ Value matches: 10/10             │
+│                                  │
+│ 🎉 ALL TENSORS ARE IDENTICAL! 🎉 │
+╰──────────────────────────────────╯
+```
+
+```
+✓ Mean Recall@10 Matches
+        A: 0.1309418985666801
+        B: 0.1309418985666801
+✓ Mean MRR@10 Matches
+        A: 0.1769138405669771
+        B: 0.1769138405669771
+
+AVG NUMBER OF DIFFERENT PASSAGES RETRIEVED
+0.0
+
+QUERY-LEVEL RECALL@10 DIFFERENCE
+271
+Equal    271
+Name: count, dtype: int64
+
+QUERY-LEVEL MRR@10 DIFFERENCE
+271
+Equal    271
+Name: count, dtype: int64
+```
+
+<img width="1189" height="790" alt="image" src="https://github.com/user-attachments/assets/309065e5-80be-429f-b4fb-98f76592ac72" />
+
+
 ## torch==1.13.1 --> torch==2.1
 
 This introduces changes in index, search and training artifacts.
