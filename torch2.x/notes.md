@@ -141,3 +141,90 @@ Name: count, dtype: int64
 
 <img width="1189" height="790" alt="image" src="https://github.com/user-attachments/assets/11941df2-00b9-475f-90d2-416d4955c420" />
 
+## torch==1.13.1 --> torch==2.1
+
+This introduces changes in index, search and training artifacts.
+
+### Indexing Results
+
+Only highlighting differences
+
+```
+ivf.pid.pt
+  Tensor[0]: torch.Size([975337]) vs torch.Size([973110])
+
+TENSOR VALUE COMPARISON
+
+0.codes.pt
+  ✗ Values differ
+
+0.residuals.pt
+  ✗ Values differ
+
+1.codes.pt
+  ✗ Values differ
+
+1.residuals.pt
+  ✗ Values differ
+
+2.codes.pt
+  ✗ Values differ
+
+2.residuals.pt
+  ✗ Values differ
+
+avg_residual.pt
+  ✗ Values differ
+
+buckets.pt
+  ✗ Tensor[0] values differ
+  ✗ Tensor[1] values differ
+
+centroids.pt
+  ✗ Values differ
+
+ivf.pid.pt
+  ✗ Tensor[0] shape mismatch
+  ✗ Tensor[1] values differ
+```
+
+### Search Results
+
+```
+╭─────────────────────────────╮
+│ COMPARING RETRIEVAL RESULTS │
+╰─────────────────────────────╯
+Path A: 
+/colbert-maintenance/torch2.x/20250813-0.2.22.torch.1.13.1-1/search/ConditionalQ
+A.tsv
+Path B: 
+/colbert-maintenance/torch2.x/20250813-0.2.22.torch.2.1-1/search/ConditionalQA.t
+sv
+
+METRICS COMPARISON
+/opt/conda/envs/compare/lib/python3.11/site-packages/ranx/metrics/recall.py:29: NumbaTypeSafetyWarning: unsafe cast from uint64 to int64. Precision may be lost.
+  scores[i] = _recall(qrels[i], run[i], k, rel_lvl)
+✗ Mean Recall@10 Doesn't Match
+        A: 0.1309418985666801
+        B: 0.13217191086680308
+✗ Mean MRR@10 Doesn't Match
+        A: 0.1769138405669771
+        B: 0.18163913781994961
+
+AVG NUMBER OF DIFFERENT PASSAGES RETRIEVED
+1.2250922509225093
+
+QUERY-LEVEL RECALL@10 DIFFERENCE
+271
+Equal       268
+Increase      2
+Decrease      1
+Name: count, dtype: int64
+
+QUERY-LEVEL MRR@10 DIFFERENCE
+271
+Equal       254
+Increase     11
+Decrease      6
+Name: count, dtype: int64
+```
