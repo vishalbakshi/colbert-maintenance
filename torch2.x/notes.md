@@ -1,4 +1,4 @@
-## Comparing Increasing Versions
+## Comparing PyTorch Increasing Versions
 
 ### Indexing Results
 
