@@ -1,3 +1,16 @@
+## Overview
+
+This repo contains the code I have used for a systematic analysis of ColBERT reproducibility across PyTorch versions 1.13.1-2.8.0, in preparation for upgrading `colbert-ai` dependency on `torch==1.13.1` (TBD, but this will likely be `colbert-ai` release 0.2.23).
+
+Main findings:
+
+- Index Reproducibility Breaks Root Cause
+  - `torch==2.0.1` --> `torch==2.1.0`: `BertModel` forward pass output divergence between PyTorch versions.
+  - `torch==2.4.1` --> `torch==2.5.0`: `BertModel` forward pass output divergence **depending on batch size** between PyTorch versions. Though it does not affect reproducibility: `torch.sort` indices order also changes between PyTorch versions.
+  - `torch==2.7.1` --> `torch==2.8.0`: `torch.nn.functional.normalize` outputs diverge between PyTorch versions (affects `centroids.pt` and `residuals.pt`).
+- Search Reproducibility Breaks Root Cause
+  - TBD
+
 ## `main.py`
 
 This file contains code to _generate_ different artifacts of interest.
