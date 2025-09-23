@@ -17,7 +17,21 @@ This file contains code to _generate_ different artifacts of interest.
 
 ## `compare.py`
 
-This file contains code to _compare_ different artifacts located at different paths.
+This file contains code to _compare_ different artifacts located at different paths. <mark>Unless otherwise noted, the function listed below compares two artifacts (from different paths) generated in the function of the same name in `main.py`:
+
+- `_index`: Compares final index tensors between two index paths.
+- `_search`: Compares rankings.tsv files located at two different paths.
+- `_intermediate`: Compares "intermediate" index artifacts (those manually saved by me with `torch.save` calls in either `collection_indexer.py`, `checkpoint.py`, `index_saver.py` or `residual.py`).
+- `_bert`
+- `_batches`: Compares `batches.pt` located at two different paths.
+- `_amp_bert`
+- `_remove_dense`
+- `_centroids`: Compares `prenorm_centroids.pt`, `postnorm_centroids.pt`, `half_centroids.pt` and `centroids.pt` saved in `collection_indexer.py` at two different paths.
+- `_norm`
+- `_lse`
+- `_sort`
+- `_residuals`: Compares `residuals_.pt`, `codes_.pt`, `batch.pt`, `centroids_.pt` from `collection_indexer.py` and `lookup_centroids_self_centroids.pt` from `residual.py` at two different paths.
+- `_subtract`
 
 ## Comparing PyTorch Increasing Versions
 
