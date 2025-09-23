@@ -33,7 +33,21 @@ This file contains code to _compare_ different artifacts located at different pa
 - `_residuals`: Compares `residuals_.pt`, `codes_.pt`, `batch.pt`, `centroids_.pt` from `collection_indexer.py` and `lookup_centroids_self_centroids.pt` from `residual.py` at two different paths.
 - `_subtract`
 
+## `jupyter_inside_modal.py`
+
+Launches jupyter lab using a specified Docker image and mounted Modal Volume:
+
+```
+SOURCE="0.2.22.main.torch.2.4.1-jupyter" modal run jupyter_inside_modal.py
+```
+
+Note that the Dockerfile must set `WORKDIR /` to access the mounted Volume. 
+
+Pro: easy inspection, generation and comparison of index or search artifacts stored in Modal Volume. Con: Modal Volume contents don't seem to refresh when updated elsewhere (could be user issue).
+
 ## Comparing PyTorch Increasing Versions
+
+The following tables show why I have only deeply inspected `colbert-ai` installs with only certain PyTorch versions.
 
 ### Indexing Results
 
