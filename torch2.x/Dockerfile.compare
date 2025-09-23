@@ -1,0 +1,23 @@
+FROM mambaorg/micromamba:latest
+
+USER root
+
+RUN apt-get update && apt-get install -y git nano curl wget build-essential && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN micromamba create -n compare python=3.11 cuda -c nvidia/label/12.4.1 -c conda-forge
+
+ENV CONDA_DEFAULT_ENV=compare
+ENV PATH=/opt/conda/envs/compare/bin:$PATH
+
+RUN micromamba run -n compare pip install pandas
+RUN micromamba run -n compare pip install rich
+RUN micromamba run -n compare pip install torch torchvision torchaudio
+RUN micromamba run -n compare pip install datasets
+RUN micromamba run -n compare pip install ranx
+
+RUN pwd
+
+RUN echo "eval \"\$(micromamba shell hook --shell bash)\"" >> ~/.bashrc && \
+    echo "micromamba activate compare" >> ~/.bashrc
+
+CMD ["/bin/bash"]

@@ -1,0 +1,23 @@
+FROM mambaorg/micromamba:latest
+
+USER root
+
+RUN apt-get update && apt-get install -y git nano curl wget build-essential && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Clone ColBERT repository and set up environment
+RUN git clone https://github.com/stanford-futuredata/ColBERT.git /ColBERT && \
+    cd /ColBERT && \
+    micromamba create -n colbert python=3.11 cuda -c nvidia/label/11.7.1 -c conda-forge && \
+    micromamba install -n colbert faiss-gpu -c pytorch -c conda-forge && \
+    micromamba run -n colbert pip install -e . && \
+    micromamba run -n colbert pip install torch==2.4.0 transformers==4.38.2 pandas
+
+ENV CONDA_DEFAULT_ENV=colbert
+ENV PATH=/opt/conda/envs/colbert/bin:$PATH
+
+WORKDIR /ColBERT
+
+RUN echo "eval \"\$(micromamba shell hook --shell bash)\"" >> ~/.bashrc && \
+    echo "micromamba activate colbert" >> ~/.bashrc
+
+CMD ["/bin/bash"]
