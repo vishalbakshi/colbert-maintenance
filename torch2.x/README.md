@@ -58,6 +58,8 @@ Note that the Dockerfile must set `WORKDIR /` to access the mounted Volume.
 
 Pro: easy inspection, generation and comparison of index or search artifacts stored in Modal Volume. Con: Modal Volume contents don't seem to refresh when updated elsewhere (could be user issue).
 
+I've also added port forwarding to the script so that I can build and use a FastHTML app, such as that in [FastHTML Experiments.ipnyb](https://github.com/vishalbakshi/colbert-maintenance/blob/main/torch2.x/FastHTML%20Experiments.ipynb)
+
 ## Comparing PyTorch Increasing Versions
 
 The following tables show why I have only deeply inspected `colbert-ai` installs with only certain PyTorch versions.
